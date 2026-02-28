@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://dlsndn6vf6n8i"]
 
 [ext_resource type="Script" uid="uid://clyhxi1q7evgh" path="res://character_body_2d.gd" id="1_ij6vw"]
-[ext_resource type="Texture2D" uid="uid://dj07wp0f8rsuw" path="res://SPRITESHEEET.png" id="2_ghijl"]
+[ext_resource type="Texture2D" uid="uid://dj07wp0f8rsuw" path="res://assets/SPRITESHEEET.png" id="2_ghijl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_44cfe"]
 atlas = ExtResource("2_ghijl")
@@ -151,13 +151,14 @@ height = 62.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 texture_filter = 1
+collision_mask = 2
 script = ExtResource("1_ij6vw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_2u5n8")
 animation = &"run"
 autoplay = "idle"
-frame_progress = 0.5066069
+frame_progress = 0.6225479
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 19)
