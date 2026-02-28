@@ -151,6 +151,7 @@ height = 62.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 texture_filter = 1
+collision_layer = 4
 script = ExtResource("1_ij6vw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

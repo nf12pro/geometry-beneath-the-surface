@@ -1,17 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://cmvy87t6dgjr3"]
+[gd_scene load_steps=3 format=3 uid="uid://bdc3jus23oqfr"]
 
-[ext_resource type="Texture2D" uid="uid://bhq7aa4lgywd5" path="res://assets/block.png" id="1_2wby2"]
+[ext_resource type="Texture2D" uid="uid://dyc2vugp2s27d" path="res://assets/beneath_block.png" id="1_0nlc0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ab6iy"]
 size = Vector2(100, 100)
 
 [node name="StaticBody2D" type="StaticBody2D"]
+visibility_layer = 2
 scale = Vector2(0.25, 0.25)
+collision_layer = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 0.03529412, 1)
-texture = ExtResource("1_2wby2")
+texture = ExtResource("1_0nlc0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visibility_layer = 2
 shape = SubResource("RectangleShape2D_ab6iy")
