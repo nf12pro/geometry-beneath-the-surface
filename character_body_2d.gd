@@ -1,82 +1,47 @@
 extends CharacterBody2D
 
-# --- Movement Settings ---
-@export var speed: float = 240.0
-@export var jump_velocity: float = 520.0 
-@export var gravity: float = 1400.0
-
-# --- Invert Settings ---
-@export_flags_2d_physics var surface_layer: int = 1
-@export_flags_2d_physics var underground_layer: int = 2
-
-# This MUST be larger than your tile's height, or you will get stuck inside the block!
-# If your tiles are 16x16, try setting this to 18 or 20.
-@export var floor_thickness_offset: float = 20.0 
+@export var speed: float = 200.0
+@export var jump_force: float = 400.0
+@export var gravity: float = 800.0
 
 var is_underground: bool = false
-
-@onready var anim: AnimatedSprite2D = $Anim
+var gravity_dir: float = 1.0
+var on_ground: bool = false
 
 func _ready() -> void:
-	_update_physics_state()
+	set_collision_mask_value(1, true)
+	set_collision_mask_value(2, false)
 
 func _physics_process(delta: float) -> void:
-	# 1. Handle Inversion (Space)
-	if Input.is_action_just_pressed("invert") and is_on_floor():
-		is_underground = !is_underground
-		_update_physics_state()
-		
-		var push_dir := 1.0 if is_underground else -1.0
-		
-		# THE FIX: round() cleans up messy spawn decimals before we teleport!
-		global_position.y = round(global_position.y) + (floor_thickness_offset * push_dir)
-		
-		velocity.y = 0.0
+	velocity.y += gravity * gravity_dir * delta
 
-	# 2. Determine Gravity Direction
-	var gravity_dir := -1.0 if is_underground else 1.0
-
-	# 3. Apply Gravity
-	if not is_on_floor():
-		velocity.y += gravity * gravity_dir * delta
-
-	# 4. Handle Jump
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = -jump_velocity * gravity_dir
-
-	# 5. Handle Horizontal Movement
 	var direction := Input.get_axis("move_left", "move_right")
-	if direction:
-		velocity.x = direction * speed
-		if anim: anim.flip_h = direction < 0
-	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
+	velocity.x = direction * speed
 
-	# 6. Apply Movement
+	if Input.is_action_just_pressed("jump") and on_ground:
+		velocity.y = -jump_force * gravity_dir
+
+	# R to reset — "the deeper you try to uncover the more the reality breaks"
+	if Input.is_key_pressed(KEY_R):
+		position = Vector2(0, 80)
+		velocity = Vector2.ZERO
+		is_underground = false
+		gravity_dir = 1.0
+		set_collision_mask_value(1, true)
+		set_collision_mask_value(2, false)
+
 	move_and_slide()
-	_update_animations()
 
-# --- Helper Functions ---
+	on_ground = is_on_floor() if not is_underground else is_on_ceiling()
 
-func _update_physics_state() -> void:
-	collision_mask = underground_layer if is_underground else surface_layer
-	up_direction = Vector2.DOWN if is_underground else Vector2.UP
-	
-	if anim:
-		anim.flip_v = is_underground
-		anim.modulate = Color.WHITE if is_underground else Color.BLACK
-
-func _update_animations() -> void:
-	if not anim or not anim.sprite_frames: return
-	
-	if is_on_floor():
-		if velocity.x != 0:
-			anim.play("run")
+	if Input.is_action_just_pressed("ui_select") and on_ground and velocity.x == 0:
+		is_underground = !is_underground
+		if is_underground:
+			gravity_dir = -1.0
+			set_collision_mask_value(1, false)
+			set_collision_mask_value(2, true)
 		else:
-			anim.play("idle")
-	else:
-		var is_moving_up := (velocity.y < 0) if not is_underground else (velocity.y > 0)
-		if is_moving_up:
-			anim.play("jump")
-		else:
-			anim.play("fall")
+			gravity_dir = 1.0
+			set_collision_mask_value(1, true)
+			set_collision_mask_value(2, false)
+		velocity.y = -jump_force * gravity_dir
