@@ -14,6 +14,10 @@ config/name="Geometry Beneath The Surface"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+global="*res://scripts/basic_configuration_scripts/global_variables.gd"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
