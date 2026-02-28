@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 [gd_scene load_steps=22 format=3 uid="uid://dlsndn6vf6n8i"]
 
 [ext_resource type="Script" uid="uid://clyhxi1q7evgh" path="res://character_body_2d.gd" id="1_ij6vw"]
@@ -148,6 +149,9 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_73nau"]
 radius = 11.0
 height = 62.0
+=======
+[gd_scene load_steps=0 format=3 uid="uid://dlsndn6vf6n8i"]
+>>>>>>> Stashed changes
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 texture_filter = 1
